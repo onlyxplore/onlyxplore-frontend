@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -239,8 +240,8 @@ export default function OnboardingPage() {
                   <Label>Profile photo</Label>
                   <div className="flex items-center gap-4">
                     {formData.profilePhoto && (
-                      <div className="h-12 w-12 rounded-full overflow-hidden bg-slate-100 flex-shrink-0 border border-white/40">
-                        <img src={formData.profilePhoto} alt="Profile" className="w-full h-full object-cover" />
+                      <div className="h-12 w-12 rounded-full overflow-hidden bg-slate-100 flex-shrink-0 border border-white/40 relative">
+                        <Image src={formData.profilePhoto} alt="Profile" fill className="object-cover" />
                       </div>
                     )}
                     <input 
@@ -425,8 +426,8 @@ export default function OnboardingPage() {
                         <Label>Logo</Label>
                         <div className="flex items-center gap-4">
                           {formData.logo && (
-                            <div className="h-12 w-12 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0 border">
-                              <img src={formData.logo} alt="Logo" className="w-full h-full object-cover" />
+                            <div className="h-12 w-12 rounded-lg overflow-hidden bg-slate-100 flex-shrink-0 border relative">
+                              <Image src={formData.logo} alt="Logo" fill className="object-cover" />
                             </div>
                           )}
                           <input 
