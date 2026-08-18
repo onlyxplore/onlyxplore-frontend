@@ -24,7 +24,6 @@ export const {
               name: user.name!,
               image: user.image || undefined,
               providerAccountId: account.providerAccountId,
-              role: "HOST", // Because we are in the host app
             });
 
             if (result.accessToken && result.user) {
@@ -90,10 +89,6 @@ export const {
           }
 
           if (result.accessToken && result.user) {
-            if (result.user.role !== "HOST") {
-              throw new Error("Unauthorized: Host access only.");
-            }
-
             return {
               id: result.user.id,
               name: result.user.name,

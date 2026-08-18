@@ -13,7 +13,7 @@ import { useSession } from "next-auth/react";
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -175,7 +175,9 @@ export default function OnboardingPage() {
     setIsLoading(true);
     try {
       await hostProfileApi.updateProfile(session.user.accessToken, formData);
-      router.push("/dashboard");
+      await update({ role: "HOST" });
+      router.refresh(); // Refresh to ensure layout gets updated session
+      setTimeout(() => router.push("/dashboard"), 500);
     } catch (error) {
       console.error(error);
       alert(error instanceof Error ? error.message : "Failed to save profile");

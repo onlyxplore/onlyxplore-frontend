@@ -50,8 +50,7 @@ export const RegisterForm = () => {
       authApi.register({ 
         email: values.email, 
         password: values.password, 
-        name: values.name, 
-        role: "HOST" 
+        name: values.name,
       })
         .then((data) => {
           if (data.success) {
