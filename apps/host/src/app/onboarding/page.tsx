@@ -233,7 +233,7 @@ export default function OnboardingPage() {
                 <div className="space-y-2">
                   <Label>Username</Label>
                   <div className="flex items-center rounded-md border border-white/40 pl-3 bg-white/20">
-                    <span className="text-[#0A3D62]/70 text-sm">onlyxplore.in/@</span>
+                    <span className="text-[#0A3D62]/90 font-medium text-sm">onlyxplore.in/@</span>
                     <Input className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0" 
                            value={formData.username} onChange={e => updateForm('username', e.target.value)} />
                   </div>
@@ -260,7 +260,7 @@ export default function OnboardingPage() {
                   <textarea 
                     value={formData.bio} 
                     onChange={e => updateForm('bio', e.target.value)}
-                    className="flex min-h-[80px] w-full rounded-md border border-white/40 bg-white/20 px-3 py-2 text-sm shadow-sm placeholder:text-[#0A3D62]/50 focus-visible:outline-none focus-visible:border-white/80 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="flex min-h-[80px] w-full rounded-md border border-white/40 bg-white/20 px-3 py-2 text-sm shadow-sm placeholder:text-[#0A3D62]/70 focus-visible:outline-none focus-visible:border-white/80 disabled:cursor-not-allowed disabled:opacity-50"
                     placeholder="e.g. Travel creator & weekend trek organizer from Mumbai." 
                   />
                 </div>
@@ -452,7 +452,7 @@ export default function OnboardingPage() {
                         <textarea 
                           value={formData.orgDescription} 
                           onChange={e => updateForm('orgDescription', e.target.value)}
-                          className="flex min-h-[80px] w-full rounded-md border border-white/40 bg-white/20 px-3 py-2 text-sm shadow-sm placeholder:text-[#0A3D62]/50 focus-visible:outline-none focus-visible:border-white/80 disabled:cursor-not-allowed disabled:opacity-50"
+                          className="flex min-h-[80px] w-full rounded-md border border-white/40 bg-white/20 px-3 py-2 text-sm shadow-sm placeholder:text-[#0A3D62]/70 focus-visible:outline-none focus-visible:border-white/80 disabled:cursor-not-allowed disabled:opacity-50"
                           placeholder="e.g. A premier travel agency organizing luxury retreats." 
                         />
                       </div>
