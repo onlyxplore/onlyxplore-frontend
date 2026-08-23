@@ -31,11 +31,7 @@ export default function ProfilePage() {
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/login");
-    }
-  }, [status, router]);
+
 
   useEffect(() => {
     async function fetchProfile() {

@@ -4,7 +4,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { useTransition, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { authApi } from "@/lib/api";
 
 import {
@@ -185,6 +185,7 @@ export const RegisterForm = () => {
             type="submit"
             className="w-full bg-[#F2C57C] hover:bg-[#F2C57C]/90 text-[#0A3D62] font-bold"
           >
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Create an account
           </Button>
         </form>

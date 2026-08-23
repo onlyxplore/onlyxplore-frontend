@@ -13,6 +13,10 @@ async function apiRequest<T>(endpoint: string, options: ApiOptions = {}): Promis
     'Content-Type': 'application/json',
   };
 
+  if (process.env.NEXT_PUBLIC_APP_URL) {
+    headers['x-frontend-url'] = process.env.NEXT_PUBLIC_APP_URL;
+  }
+
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
   }
@@ -26,7 +30,10 @@ async function apiRequest<T>(endpoint: string, options: ApiOptions = {}): Promis
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message || 'Something went wrong');
+    const errorMsg = Array.isArray(data.message) 
+      ? data.message.join(', ') 
+      : (data.message || 'Something went wrong');
+    throw new Error(errorMsg);
   }
 
   return data as T;

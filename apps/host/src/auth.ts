@@ -4,6 +4,16 @@ import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { authApi, type LoginResponse } from "@/lib/api";
 
+import { CredentialsSignin } from "next-auth";
+
+class CustomAuthError extends CredentialsSignin {
+  code: string;
+  constructor(message: string) {
+    super(message);
+    this.code = message;
+  }
+}
+
 export const {
   handlers: { GET, POST },
   auth,
@@ -81,11 +91,11 @@ export const {
           const result: LoginResponse = await authApi.login({ email, password, code });
 
           if (result.twoFactor) {
-            throw new Error("TWO_FACTOR_REQUIRED");
+            throw new CustomAuthError("TWO_FACTOR_REQUIRED");
           }
 
           if (result.success) {
-            throw new Error(result.success);
+            throw new CustomAuthError(`SUCCESS:${result.success}`);
           }
 
           if (result.accessToken && result.user) {
@@ -102,10 +112,13 @@ export const {
 
           return null;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            throw new Error(error.message);
+          if (error instanceof CustomAuthError) {
+            throw error;
           }
-          throw new Error("An error occurred during authentication");
+          if (error instanceof Error) {
+            throw new CustomAuthError(error.message);
+          }
+          throw new CustomAuthError("An error occurred during authentication");
         }
       },
     }),

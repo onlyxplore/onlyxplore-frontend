@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
+import { Loader2 } from "lucide-react";
+import { authApi } from "@/lib/api";
 
 import {
   Form,
@@ -42,28 +44,33 @@ export const LoginForm = () => {
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     startTransition(() => {
-      signIn("credentials", {
-        ...values,
-        callbackUrl: "/dashboard",
-        redirect: false,
-      })
-      .then((callback) => {
-        if (callback?.error) {
-          if (callback.error === "TWO_FACTOR_REQUIRED") {
+      authApi.login(values)
+        .then((data) => {
+          if (data.twoFactor) {
             setShowTwoFactor(true);
             return;
           }
-          
-          form.reset();
-          // NextAuth wraps our thrown errors in a Generic error or the message itself
-          toast.error(callback.error);
-        }
-
-        if (callback?.ok && !callback?.error) {
-           router.push("/dashboard");
-        }
-      })
-      .catch(() => toast.error("Something went wrong"));
+          if (data.success) {
+            toast.success(data.success);
+            return;
+          }
+          if (data.accessToken) {
+            signIn("credentials", {
+              ...values,
+              callbackUrl: "/dashboard",
+              redirect: false,
+            }).then((callback) => {
+              if (callback?.error) {
+                toast.error("Invalid email or password.");
+              } else if (callback?.ok) {
+                router.push("/dashboard");
+              }
+            });
+          }
+        })
+        .catch((error: Error) => {
+          toast.error(error.message || "Invalid email or password.");
+        });
     });
   };
 
@@ -157,6 +164,7 @@ export const LoginForm = () => {
             type="submit"
             className="w-full bg-[#F2C57C] hover:bg-[#F2C57C]/90 text-[#0A3D62] font-bold"
           >
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {showTwoFactor ? "Confirm" : "Login"}
           </Button>
         </form>

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
+import { authApi } from "@/lib/api";
 
 import {
   Form,
@@ -42,28 +43,33 @@ export const LoginForm = () => {
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     startTransition(() => {
-      signIn("credentials", {
-        ...values,
-        callbackUrl: "/dashboard",
-        redirect: false,
-      })
-      .then((callback) => {
-        if (callback?.error) {
-          if (callback.error === "TWO_FACTOR_REQUIRED") {
+      authApi.login(values)
+        .then((data) => {
+          if (data.twoFactor) {
             setShowTwoFactor(true);
             return;
           }
-          
-          form.reset();
-          // NextAuth wraps our thrown errors in a Generic error or the message itself
-          toast.error(callback.error);
-        }
-
-        if (callback?.ok && !callback?.error) {
-           router.push("/dashboard");
-        }
-      })
-      .catch(() => toast.error("Something went wrong"));
+          if (data.success) {
+            toast.success(data.success);
+            return;
+          }
+          if (data.accessToken) {
+            signIn("credentials", {
+              ...values,
+              callbackUrl: "/dashboard",
+              redirect: false,
+            }).then((callback) => {
+              if (callback?.error) {
+                toast.error("Session creation failed. Please try again.");
+              } else if (callback?.ok) {
+                router.push("/dashboard");
+              }
+            });
+          }
+        })
+        .catch((error: Error) => {
+          toast.error(error.message || "Invalid email or password.");
+        });
     });
   };
 
