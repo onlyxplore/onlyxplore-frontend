@@ -7,6 +7,7 @@ import {
   Calendar,
   PieChart,
   Settings2,
+  LayoutDashboard,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -32,63 +33,57 @@ const data = {
   },
   navMain: [
     {
-      title: "Itineraries",
-      url: "#",
-      icon: Map,
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: LayoutDashboard,
       isActive: true,
+      items: [],
+    },
+    {
+      title: "Itineraries",
+      url: "/itineraries",
+      icon: Map,
       items: [
         {
           title: "All Itineraries",
-          url: "#",
+          url: "/itineraries",
         },
         {
-          title: "Drafts",
-          url: "#",
+          title: "Create New",
+          url: "/itineraries/create",
         },
       ],
     },
     {
       title: "Bookings",
-      url: "#",
+      url: "/bookings",
       icon: Calendar,
       items: [
         {
-          title: "Upcoming",
-          url: "#",
-        },
-        {
-          title: "Past",
-          url: "#",
+          title: "All Bookings",
+          url: "/bookings",
         },
       ],
     },
     {
       title: "Analytics",
-      url: "#",
+      url: "/analytics",
       icon: PieChart,
       items: [
         {
-          title: "Revenue",
-          url: "#",
-        },
-        {
-          title: "Audience",
-          url: "#",
+          title: "Overview",
+          url: "/analytics",
         },
       ],
     },
     {
       title: "Settings",
-      url: "#",
+      url: "/settings",
       icon: Settings2,
       items: [
         {
           title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
+          url: "/settings",
         },
       ],
     },

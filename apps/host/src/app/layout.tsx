@@ -24,10 +24,10 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: {
-    default: "OnlyXplore",
-    template: "%s | OnlyXplore",
+    default: "OnlyXplore Host | For Creators",
+    template: "%s | OnlyXplore Creators",
   },
-  description: "OnlyXplore - Built for Every Journey. India's creator-led travel platform where travel creators, communities, and agencies create itineraries, share experiences, and connect with travelers.",
+  description: "OnlyXplore Host - The premier platform for travel creators, hosts, and agencies to build itineraries, manage bookings, and connect with travelers.",
 };
 
 

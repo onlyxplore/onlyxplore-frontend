@@ -16,9 +16,9 @@ const caveat = Caveat({
 export default function HostHome() {
   return (
     <main className="relative flex min-h-[100dvh] flex-col items-center justify-start pt-32 sm:pt-40 md:pt-48 overflow-hidden w-full">
-      <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] flex items-center justify-between gap-4 px-6 py-2.5 bg-white/80 border border-[#0A3D62]/15 backdrop-blur-xl rounded-full shadow-[0_8px_30px_rgb(10,61,98,0.1)] w-[max-content]">
+      <nav className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-[100] flex items-center justify-between gap-3 sm:gap-4 px-4 sm:px-6 py-2.5 bg-white/80 border border-[#0A3D62]/15 backdrop-blur-xl rounded-full shadow-[0_8px_30px_rgb(10,61,98,0.1)] w-[95%] sm:w-[max-content]">
         <div className={cn("text-xl font-bold tracking-tight text-[#0A3D62]", font.className)}>
-          OnlyXplore Host
+          OnlyXplore Creators
         </div>
         <div className="w-[1.5px] h-6 bg-[#0A3D62]/20 rounded-full" />
         <LoginButton>
