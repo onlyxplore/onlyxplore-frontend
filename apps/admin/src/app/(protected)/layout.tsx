@@ -29,7 +29,9 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="flex h-screen bg-[#F4F6FA] overflow-hidden">
+    <div className="flex h-screen bg-[#F7F7F2] overflow-hidden text-[#0A3D62] selection:bg-[#3C8DAD]/30 relative">
+      <div className="absolute inset-0 z-0 h-full w-full bg-[radial-gradient(#3C8DAD_1px,transparent_1px)] [background-size:24px_24px] opacity-[0.15] pointer-events-none"></div>
+
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/40 z-40 md:hidden" onClick={() => setSidebarOpen(false)} />
@@ -99,9 +101,9 @@ export default function ProtectedLayout({ children }: ProtectedLayoutProps) {
       </aside>
 
       {/* Main */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col overflow-hidden relative z-10">
         {/* Top bar */}
-        <header className="h-16 bg-white border-b border-gray-100 flex items-center px-4 md:px-6 shrink-0 shadow-sm">
+        <header className="h-16 bg-white/50 backdrop-blur-sm border-b border-gray-100/50 flex items-center px-4 md:px-6 shrink-0 shadow-sm">
           <button onClick={() => setSidebarOpen(true)} className="md:hidden p-2 hover:bg-gray-100 rounded-xl mr-3">
             <Menu className="w-5 h-5 text-gray-700" />
           </button>
