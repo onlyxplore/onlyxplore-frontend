@@ -45,12 +45,14 @@ export const CardWrapper = ({
           </div>
         </CardFooter>
       )}
-      <CardFooter className="pt-0">
-        <BackButton
-          label={backButtonLabel}
-          href={backButtonHref}
-        />
-      </CardFooter>
+      {backButtonLabel && backButtonHref && (
+        <CardFooter className="pt-0">
+          <BackButton
+            label={backButtonLabel}
+            href={backButtonHref}
+          />
+        </CardFooter>
+      )}
     </Card>
   );
 };

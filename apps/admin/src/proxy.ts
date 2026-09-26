@@ -1,5 +1,4 @@
-import NextAuth from "next-auth";
-import authConfig from "./auth.config";
+import { auth } from "./auth";
 import {
   DEFAULT_LOGIN_REDIRECT,
   apiAuthPrefix,
@@ -7,11 +6,11 @@ import {
   publicRoutes,
 } from "@/routes";
 
-const { auth } = NextAuth(authConfig);
-
 export default auth((req) => {
   const { nextUrl } = req;
-  const isLoggedIn = !!req.auth;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const userRole = (req.auth as any)?.user?.role || (req.auth as any)?.role;
+  const isLoggedIn = !!req.auth && userRole === "ADMIN";
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);

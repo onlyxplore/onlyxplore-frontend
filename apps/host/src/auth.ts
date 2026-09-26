@@ -37,6 +37,9 @@ export const {
             });
 
             if (result.accessToken && result.user) {
+              if (result.user.role !== "HOST") {
+                return null;
+              }
               token.accessToken = result.accessToken;
               token.role = result.user.role;
               token.isTwoFactorEnabled = result.user.isTwoFactorEnabled;
@@ -99,6 +102,9 @@ export const {
           }
 
           if (result.accessToken && result.user) {
+            if (result.user.role !== "HOST") {
+              throw new CustomAuthError("Unauthorized: Hosts only.");
+            }
             return {
               id: result.user.id,
               name: result.user.name,

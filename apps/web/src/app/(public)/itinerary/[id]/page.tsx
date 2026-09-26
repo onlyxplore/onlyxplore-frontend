@@ -5,7 +5,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import Link from "next/link";
 import { APIProvider, Map as GoogleMap, AdvancedMarker, Pin, useMap } from "@vis.gl/react-google-maps";
 import { Home, MapPin, Star, Clock, ShieldCheck, Hotel, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";

@@ -23,13 +23,35 @@ export const {
     error: "/error",
   },
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
+    async jwt({ token, user, trigger, session, account }) {
       if (user) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const u = user as any; 
-        token.accessToken = u.accessToken;
-        token.role = u.role;
-        token.isTwoFactorEnabled = u.isTwoFactorEnabled;
+        if (account?.provider === "google") {
+          try {
+            const result = await authApi.googleLogin({
+              email: user.email!,
+              name: user.name!,
+              image: user.image || undefined,
+              providerAccountId: account.providerAccountId,
+            });
+
+            if (result.accessToken && result.user) {
+              if (result.user.role !== "USER") {
+                return null; // Return null if wrong role
+              }
+              token.accessToken = result.accessToken;
+              token.role = result.user.role;
+              token.isTwoFactorEnabled = result.user.isTwoFactorEnabled;
+            }
+          } catch (e) {
+            console.error("Failed to authenticate with backend via Google", e);
+          }
+        } else {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const u = user as any; 
+          token.accessToken = u.accessToken;
+          token.role = u.role;
+          token.isTwoFactorEnabled = u.isTwoFactorEnabled;
+        }
       }
 
       if (trigger === "update" && (session as DefaultSession)) {

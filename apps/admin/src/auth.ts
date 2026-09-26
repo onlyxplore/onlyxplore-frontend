@@ -1,8 +1,16 @@
 import NextAuth, { type DefaultSession } from "next-auth";
 import { type JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
 import { authApi, type LoginResponse } from "@/lib/api";
+import { CredentialsSignin } from "next-auth";
+
+class CustomAuthError extends CredentialsSignin {
+  code: string;
+  constructor(message: string) {
+    super(message);
+    this.code = message;
+  }
+}
 
 export const {
   handlers: { GET, POST },
@@ -46,10 +54,6 @@ export const {
   },
   session: { strategy: "jwt" },
   providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
     Credentials({
       async authorize(credentials) {
         const { email, password, code } = credentials as {
@@ -62,16 +66,16 @@ export const {
           const result: LoginResponse = await authApi.login({ email, password, code });
 
           if (result.twoFactor) {
-            throw new Error("TWO_FACTOR_REQUIRED");
+            throw new CustomAuthError("TWO_FACTOR_REQUIRED");
           }
 
           if (result.success) {
-            throw new Error(result.success);
+            throw new CustomAuthError(result.success);
           }
 
           if (result.accessToken && result.user) {
             if (result.user.role !== "ADMIN") {
-              throw new Error("Unauthorized: Admins only.");
+              throw new CustomAuthError("Unauthorized: Admins only.");
             }
 
             return {
@@ -87,10 +91,13 @@ export const {
 
           return null;
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            throw new Error(error.message);
+          if (error instanceof CustomAuthError) {
+            throw error;
           }
-          throw new Error("An error occurred during authentication");
+          if (error instanceof Error) {
+            throw new CustomAuthError(error.message);
+          }
+          throw new CustomAuthError("An error occurred during authentication");
         }
       },
     }),
